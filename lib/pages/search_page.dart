@@ -110,19 +110,10 @@ class _SearchPageState extends State<SearchPage> {
       ),
       SliverPadding(
         padding: EdgeInsets.fromLTRB(pad, 12, pad, 40),
-        sliver: SliverGrid(
-          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 190 * s,
-            mainAxisSpacing: 22,
-            crossAxisSpacing: 20,
-            childAspectRatio: 0.56,
-          ),
-          delegate: SliverChildBuilderDelegate(
-            (context, i) => LayoutBuilder(
-              builder: (context, c) => GameCard(game: results[i], width: c.maxWidth, onOpen: () => openGame(context, results[i])),
-            ),
-            childCount: results.length,
-          ),
+        sliver: GameCardGrid(
+          count: results.length,
+          maxTileWidth: 190 * s,
+          itemBuilder: (context, i, w) => GameCard(game: results[i], width: w, onOpen: () => openGame(context, results[i])),
         ),
       ),
     ]);

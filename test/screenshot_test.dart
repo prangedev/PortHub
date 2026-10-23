@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:porthub/achievements/achievement_service.dart';
 import 'package:porthub/core/models/game.dart';
 import 'package:porthub/core/models/game_requirements.dart';
 import 'package:porthub/core/models/hardware_profile.dart';
@@ -254,6 +255,7 @@ void main() {
           ChangeNotifierProvider.value(value: downloads),
           ChangeNotifierProvider.value(value: notifications),
           ChangeNotifierProvider.value(value: SelfUpdateService(settings, notifications)),
+          ChangeNotifierProvider.value(value: AchievementService(settings, notifications)),
           ChangeNotifierProvider.value(value: RomLibraryService(RomDao(db), XboxUnity(cache))),
           ChangeNotifierProvider.value(value: GamepadService(InputRouter.instance)),
           Provider.value(value: actions),

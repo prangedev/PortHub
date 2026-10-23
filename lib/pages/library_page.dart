@@ -126,36 +126,20 @@ class _LibraryPageState extends State<LibraryPage> {
       else
         SliverPadding(
           padding: EdgeInsets.fromLTRB(pad, 12, pad, 40),
-          sliver: SliverLayoutBuilder(builder: (context, constraints) {
-            // Altura = capa 2:3 + borda de foco + nome e categoria (não proporcional:
-            // com cartões pequenos o texto não encolhe junto).
-            const spacing = 20.0;
-            final cols = ((constraints.crossAxisExtent + spacing) / (190 * s + spacing)).ceil().clamp(1, 12);
-            final tileW = (constraints.crossAxisExtent - spacing * (cols - 1)) / cols;
-            return SliverGrid(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: cols,
-                mainAxisSpacing: 22,
-                crossAxisSpacing: spacing,
-                mainAxisExtent: tileW * 1.5 + 4 + 52,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (context, i) {
-                  final g = games[i];
-                  return LayoutBuilder(
-                    builder: (context, c) => GameCard(
-                      game: g,
-                      width: c.maxWidth,
-                      autofocus: i == 0,
-                      progress: dl.taskFor(g.id)?.progress,
-                      onOpen: () => openGame(context, g),
-                    ),
-                  );
-                },
-                childCount: games.length,
-              ),
-            );
-          }),
+          sliver: GameCardGrid(
+            count: games.length,
+            maxTileWidth: 190 * s,
+            itemBuilder: (context, i, w) {
+              final g = games[i];
+              return GameCard(
+                game: g,
+                width: w,
+                autofocus: i == 0,
+                progress: dl.taskFor(g.id)?.progress,
+                onOpen: () => openGame(context, g),
+              );
+            },
+          ),
         ),
     ]);
   }

@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../core/formatters.dart';
 import '../downloads/download_manager.dart';
+import '../pages/achievements_page.dart';
 import '../pages/downloads_page.dart';
 import '../pages/emulators_page.dart';
 import '../pages/hardware_page.dart';
@@ -36,14 +38,15 @@ class _AppShellState extends State<AppShell> with PadHandlerMixin {
   StreamSubscription<AppNotification>? _toastSub;
   final List<AppNotification> _toasts = [];
 
-  static const _searchTab = 3;
-  static const _downloadsTab = 4;
-  static const _settingsTab = 6;
+  static const _searchTab = 4;
+  static const _downloadsTab = 5;
+  static const _settingsTab = 7;
 
   static const _tabs = [
     ('Início', Icons.home_rounded),
     ('Biblioteca', Icons.grid_view_rounded),
     ('Emuladores', Icons.videogame_asset_rounded),
+    ('Conquistas', Icons.emoji_events_rounded),
     ('Pesquisar', Icons.search_rounded),
     ('Downloads', Icons.download_rounded),
     ('Dispositivo', Icons.memory_rounded),
@@ -100,53 +103,69 @@ class _AppShellState extends State<AppShell> with PadHandlerMixin {
   }
 
   Widget _page() => switch (_tab) {
-        0 => const HomePage(),
-        1 => const LibraryPage(),
-        2 => const EmulatorsPage(),
-        _searchTab => const SearchPage(),
-        _downloadsTab => const DownloadsPage(),
-        5 => const HardwarePage(),
-        _ => const SettingsPage(),
-      };
+    0 => const HomePage(),
+    1 => const LibraryPage(),
+    2 => const EmulatorsPage(),
+    3 => const AchievementsPage(),
+    _searchTab => const SearchPage(),
+    _downloadsTab => const DownloadsPage(),
+    6 => const HardwarePage(),
+    _ => const SettingsPage(),
+  };
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: PH.bg,
-      body: Stack(children: [
-        Column(children: [
-          _TopBar(tabs: _tabs, current: _tab, onSelect: _go),
-          Expanded(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 260),
-              switchInCurve: Curves.easeOutCubic,
-              transitionBuilder: (child, anim) => FadeTransition(
-                opacity: anim,
-                child: SlideTransition(
-                  position: Tween(begin: const Offset(0, 0.015), end: Offset.zero).animate(anim),
-                  child: child,
+    // Voltar do Android (botão/gesto) faz o mesmo que o B do controle: volta ao
+    // Início antes de sair do app.
+    return PopScope(
+      canPop: _tab == 0,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) _go(0);
+      },
+      child: Scaffold(
+        backgroundColor: PH.bg,
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                _TopBar(tabs: _tabs, current: _tab, onSelect: _go),
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 260),
+                    switchInCurve: Curves.easeOutCubic,
+                    transitionBuilder: (child, anim) => FadeTransition(
+                      opacity: anim,
+                      child: SlideTransition(
+                        position: Tween(begin: const Offset(0, 0.015), end: Offset.zero).animate(anim),
+                        child: child,
+                      ),
+                    ),
+                    child: KeyedSubtree(key: ValueKey(_tab), child: _page()),
+                  ),
                 ),
-              ),
-              child: KeyedSubtree(key: ValueKey(_tab), child: _page()),
+                const HintBar(
+                  hints: [
+                    (PadGlyph.a, 'Selecionar'),
+                    (PadGlyph.b, 'Voltar'),
+                    (PadGlyph.y, 'Pesquisar'),
+                    (PadGlyph.lb, 'Seção anterior'),
+                    (PadGlyph.rb, 'Próxima seção'),
+                  ],
+                  leading: _ControllerStatus(),
+                ),
+              ],
             ),
-          ),
-          const HintBar(hints: [
-            (PadGlyph.a, 'Selecionar'),
-            (PadGlyph.b, 'Voltar'),
-            (PadGlyph.y, 'Pesquisar'),
-            (PadGlyph.lb, 'Seção anterior'),
-            (PadGlyph.rb, 'Próxima seção'),
-          ], leading: _ControllerStatus()),
-        ]),
-        Positioned(
-          top: 76,
-          right: 24,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [for (final t in _toasts) _Toast(n: t)],
-          ),
+            Positioned(
+              top: 76,
+              right: 24,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [for (final t in _toasts) _Toast(n: t)],
+              ),
+            ),
+          ],
         ),
-      ]),
+      ),
     );
   }
 }
@@ -173,100 +192,117 @@ class _TopBar extends StatelessWidget {
         gradient: LinearGradient(colors: [Color(0xFF0E1620), Color(0xFF0A0D12)]),
         border: Border(bottom: BorderSide(color: PH.stroke)),
       ),
-      child: Row(children: [
-        const Icon(Icons.hub_rounded, color: PH.accent, size: 28),
-        if (!compact) ...[
-          if (!narrow) ...[
-            const SizedBox(width: 10),
-            const Text('PORTHUB', style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 3, fontSize: 18)),
+      child: Row(
+        children: [
+          const Icon(Icons.hub_rounded, color: PH.accent, size: 28),
+          if (!compact) ...[
+            if (!narrow) ...[
+              const SizedBox(width: 10),
+              const Text('PORTHUB', style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 3, fontSize: 18)),
+            ],
+            SizedBox(width: narrow ? 16 : 28),
+            const ButtonGlyph(PadGlyph.lb, size: 20),
           ],
-          SizedBox(width: narrow ? 16 : 28),
-          const ButtonGlyph(PadGlyph.lb, size: 20),
-        ],
-        const SizedBox(width: 8),
-        Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(children: [
-              for (var i = 0; i < tabs.length; i++)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 3),
-                  child: Focusable(
-                    glow: false,
-                    focusScale: 1.0,
-                    borderRadius: 8,
-                    onActivate: () => onSelect(i),
-                    builder: (context, focused) => AnimatedContainer(
-                      duration: const Duration(milliseconds: 150),
-                      padding: EdgeInsets.symmetric(horizontal: narrow ? 12 : 16, vertical: 9),
-                      decoration: BoxDecoration(
-                        color: i == current ? PH.accent.withValues(alpha: 0.18) : Colors.transparent,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(children: [
-                        Icon(tabs[i].$2, size: 19, color: i == current ? PH.accent : PH.textDim),
-                        if (!narrow || i == current) ...[
-                          const SizedBox(width: 8),
-                          Text(tabs[i].$1,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: i == current ? PH.text : PH.textDim,
-                              )),
-                        ],
-                        if (i == _AppShellState._downloadsTab && dl.activeCount > 0) ...[
-                          const SizedBox(width: 6),
-                          _CountBadge(dl.activeCount),
-                        ],
-                      ]),
-                    ),
-                  ),
-                ),
-            ]),
-          ),
-        ),
-        if (!compact) const ButtonGlyph(PadGlyph.rb, size: 20),
-        const SizedBox(width: 20),
-        if (lib.refreshing) ...[
-          SizedBox(
-            width: 16,
-            height: 16,
-            child: CircularProgressIndicator(strokeWidth: 2, value: lib.refreshProgress > 0 ? lib.refreshProgress : null),
-          ),
           const SizedBox(width: 8),
-          if (!narrow) const Text('Sincronizando', style: TextStyle(color: PH.textDim, fontSize: 13)),
-          const SizedBox(width: 20),
-        ],
-        if (dl.activeCount > 0 && !narrow) ...[
-          const Icon(Icons.downloading_rounded, size: 18, color: PH.accentSoft),
-          const SizedBox(width: 6),
-          Text(formatSpeed(dl.totalSpeed), style: const TextStyle(color: PH.textDim, fontSize: 13)),
-          const SizedBox(width: 20),
-        ],
-        if (selfUpdate.updateAvailable) ...[
-          Focusable(
-            glow: false,
-            focusScale: 1.0,
-            borderRadius: 8,
-            onActivate: () => onSelect(_AppShellState._settingsTab),
-            builder: (context, focused) => Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: focused ? PH.yellow.withValues(alpha: 0.3) : PH.yellow.withValues(alpha: 0.16),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(mainAxisSize: MainAxisSize.min, children: [
-                const Icon(Icons.system_update_rounded, size: 16, color: PH.yellow),
-                if (!narrow) ...[
-                  const SizedBox(width: 6),
-                  Text('PortHub ${selfUpdate.latest!.tag}', style: const TextStyle(color: PH.yellow, fontSize: 13, fontWeight: FontWeight.w700)),
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (var i = 0; i < tabs.length; i++)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 3),
+                      child: Focusable(
+                        glow: false,
+                        focusScale: 1.0,
+                        borderRadius: 8,
+                        onActivate: () => onSelect(i),
+                        builder: (context, focused) => AnimatedContainer(
+                          duration: const Duration(milliseconds: 150),
+                          padding: EdgeInsets.symmetric(horizontal: narrow ? 12 : 16, vertical: 9),
+                          decoration: BoxDecoration(
+                            color: i == current ? PH.accent.withValues(alpha: 0.18) : Colors.transparent,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(tabs[i].$2, size: 19, color: i == current ? PH.accent : PH.textDim),
+                              if (!narrow || i == current) ...[
+                                const SizedBox(width: 8),
+                                Text(
+                                  tabs[i].$1,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: i == current ? PH.text : PH.textDim,
+                                  ),
+                                ),
+                              ],
+                              if (i == _AppShellState._downloadsTab && dl.activeCount > 0) ...[
+                                const SizedBox(width: 6),
+                                _CountBadge(dl.activeCount),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                 ],
-              ]),
+              ),
             ),
           ),
-          const SizedBox(width: 16),
+          if (!compact) const ButtonGlyph(PadGlyph.rb, size: 20),
+          const SizedBox(width: 20),
+          if (lib.refreshing) ...[
+            SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                value: lib.refreshProgress > 0 ? lib.refreshProgress : null,
+              ),
+            ),
+            const SizedBox(width: 8),
+            if (!narrow) const Text('Sincronizando', style: TextStyle(color: PH.textDim, fontSize: 13)),
+            const SizedBox(width: 20),
+          ],
+          if (dl.activeCount > 0 && !narrow) ...[
+            const Icon(Icons.downloading_rounded, size: 18, color: PH.accentSoft),
+            const SizedBox(width: 6),
+            Text(formatSpeed(dl.totalSpeed), style: const TextStyle(color: PH.textDim, fontSize: 13)),
+            const SizedBox(width: 20),
+          ],
+          if (selfUpdate.updateAvailable) ...[
+            Focusable(
+              glow: false,
+              focusScale: 1.0,
+              borderRadius: 8,
+              onActivate: () => onSelect(_AppShellState._settingsTab),
+              builder: (context, focused) => Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: focused ? PH.yellow.withValues(alpha: 0.3) : PH.yellow.withValues(alpha: 0.16),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.system_update_rounded, size: 16, color: PH.yellow),
+                    if (!narrow) ...[
+                      const SizedBox(width: 6),
+                      Text(
+                        'PortHub ${selfUpdate.latest!.tag}',
+                        style: const TextStyle(color: PH.yellow, fontSize: 13, fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+          ],
+          const _Clock(),
         ],
-        const _Clock(),
-      ]),
+      ),
     );
   }
 }
@@ -276,10 +312,10 @@ class _CountBadge extends StatelessWidget {
   final int count;
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-        decoration: BoxDecoration(color: PH.accent, borderRadius: BorderRadius.circular(10)),
-        child: Text('$count', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800)),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+    decoration: BoxDecoration(color: PH.accent, borderRadius: BorderRadius.circular(10)),
+    child: Text('$count', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800)),
+  );
 }
 
 class _Clock extends StatefulWidget {
@@ -306,7 +342,10 @@ class _ClockState extends State<_Clock> {
   Widget build(BuildContext context) {
     final now = DateTime.now();
     String two(int v) => v.toString().padLeft(2, '0');
-    return Text('${two(now.hour)}:${two(now.minute)}', style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700));
+    return Text(
+      '${two(now.hour)}:${two(now.minute)}',
+      style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+    );
   }
 }
 
@@ -316,13 +355,19 @@ class _ControllerStatus extends StatelessWidget {
   Widget build(BuildContext context) {
     final pad = context.watch<GamepadService>();
     final name = pad.controllerName;
-    return Row(children: [
-      Icon(name == null ? Icons.keyboard_rounded : Icons.sports_esports_rounded, size: 18, color: PH.textFaint),
-      const SizedBox(width: 8),
-      Flexible(
-        child: Text(name ?? 'Teclado / toque', overflow: TextOverflow.ellipsis, style: const TextStyle(color: PH.textFaint, fontSize: 12)),
-      ),
-    ]);
+    return Row(
+      children: [
+        Icon(name == null ? Icons.keyboard_rounded : Icons.sports_esports_rounded, size: 18, color: PH.textFaint),
+        const SizedBox(width: 8),
+        Flexible(
+          child: Text(
+            name ?? 'Teclado / toque',
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(color: PH.textFaint, fontSize: 12),
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -356,17 +401,39 @@ class _Toast extends StatelessWidget {
             border: Border.all(color: PH.stroke),
             boxShadow: const [BoxShadow(color: Colors.black54, blurRadius: 24)],
           ),
-          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Icon(n.icon, color: PH.accent),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(n.title, style: const TextStyle(fontWeight: FontWeight.w800)),
-                const SizedBox(height: 2),
-                Text(n.body, maxLines: 3, overflow: TextOverflow.ellipsis, style: const TextStyle(color: PH.textDim, fontSize: 13)),
-              ]),
-            ),
-          ]),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (n.imageUrl != null)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: CachedNetworkImage(
+                    imageUrl: n.imageUrl!,
+                    width: 48,
+                    height: 48,
+                    errorWidget: (_, _, _) => Icon(n.icon, color: PH.accent),
+                  ),
+                )
+              else
+                Icon(n.icon, color: PH.accent),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(n.title, style: const TextStyle(fontWeight: FontWeight.w800)),
+                    const SizedBox(height: 2),
+                    Text(
+                      n.body,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(color: PH.textDim, fontSize: 13),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

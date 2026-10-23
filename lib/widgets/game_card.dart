@@ -9,9 +9,13 @@ import 'game_art.dart';
 
 enum CardStyle { portrait, landscape }
 
-/// Card de jogo: capa, nome, compatibilidade, tamanho e status.
-/// Retrato (2:3, biblioteca) ou paisagem (16:9, "Recentemente jogados").
-class GameCard extends StatelessWidget {
+/// Altura da legenda (nome + linha de informações) abaixo da capa.
+const gameCardCaptionHeight = 52.0;
+
+/// Card de jogo: a capa fica limpa (só selos de compatibilidade e status) e o
+/// nome vai sempre abaixo dela. Retrato (2:3, biblioteca) ou paisagem (16:9,
+/// "Recentemente jogados").
+class GameCard extends StatefulWidget {
   const GameCard({
     super.key,
     required this.game,
@@ -36,25 +40,39 @@ class GameCard extends StatelessWidget {
   final double? progress;
 
   @override
+  State<GameCard> createState() => _GameCardState();
+}
+
+class _GameCardState extends State<GameCard> {
+  bool _focused = false;
+
+  @override
   Widget build(BuildContext context) {
+    final game = widget.game;
+    final style = widget.style;
+    final progress = widget.progress;
     final s = PH.scale(context);
-    final w = width ?? (style == CardStyle.portrait ? 168 * s : 340 * s);
+    final w = widget.width ?? (style == CardStyle.portrait ? 168 * s : 340 * s);
     final h = style == CardStyle.portrait ? w * 1.5 : w * 9 / 16;
+    final info = [game.category, if (game.size != null) formatBytes(game.size)].join(' · ');
+
     return SizedBox(
       width: w,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
+          // O destaque (borda + brilho) fica só na capa; a legenda acompanha pela cor.
           Focusable(
-            autofocus: autofocus,
-            focusNode: focusNode,
-            onActivate: onOpen,
+            autofocus: widget.autofocus,
+            focusNode: widget.focusNode,
+            onActivate: widget.onOpen,
             scrollAlignment: 0.35,
             onFocusChange: (f) {
-              if (f) onFocus?.call(game);
+              setState(() => _focused = f);
+              if (f) widget.onFocus?.call(game);
             },
-            builder: (context, focused) => ClipRRect(
+            builder: (context, _) => ClipRRect(
               borderRadius: BorderRadius.circular(PH.radius),
               child: SizedBox(
                 width: w,
@@ -62,20 +80,15 @@ class GameCard extends StatelessWidget {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    GameArt(
-                      game: game,
-                      kind: style == CardStyle.portrait ? ArtKind.cover : ArtKind.banner,
-                      // No cartão deitado o nome já vai no rodapé.
-                      showTitleOnFallback: style == CardStyle.portrait,
-                    ),
-                    // Gradiente inferior para legibilidade.
+                    GameArt(game: game, kind: style == CardStyle.portrait ? ArtKind.cover : ArtKind.banner),
+                    // Leve sombra no topo só para os selos ficarem legíveis.
                     const DecoratedBox(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          colors: [Colors.transparent, Colors.transparent, Color(0xDD000000)],
-                          stops: [0, 0.55, 1],
+                          colors: [Color(0x66000000), Colors.transparent],
+                          stops: [0, 0.3],
                         ),
                       ),
                     ),
@@ -84,40 +97,85 @@ class GameCard extends StatelessWidget {
                       right: 8,
                       child: _Glass(child: CompatBadge(result: game.compatibility, size: 9)),
                     ),
-                    if (game.favorite)
-                      const Positioned(top: 8, left: 8, child: _Glass(child: Icon(Icons.star_rounded, size: 14, color: PH.yellow))),
                     Positioned(
-                      left: 10,
-                      right: 10,
-                      bottom: 8,
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-                        // A capa gerada já escreve o nome; não repete no foco.
-                        if (style == CardStyle.landscape || (focused && (game.coverUrl ?? game.bannerUrl) != null))
-                          Text(game.name,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15, height: 1.1)),
-                        const SizedBox(height: 4),
-                        Row(children: [
-                          if (game.status != InstallStatus.notInstalled) Flexible(child: StatusChip(status: game.status, dense: true)),
-                          const Spacer(),
-                          const SizedBox(width: 4),
-                          Text(formatBytes(game.size), style: const TextStyle(fontSize: 11, color: Colors.white70)),
-                        ]),
-                        if (progress != null) ...[const SizedBox(height: 6), PHProgress(value: progress, height: 4)],
-                      ]),
+                      top: 8,
+                      left: 8,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (game.favorite) const _Glass(child: Icon(Icons.star_rounded, size: 14, color: PH.yellow)),
+                          if (game.status != InstallStatus.notInstalled) ...[
+                            if (game.favorite) const SizedBox(width: 4),
+                            _StatusDot(status: game.status),
+                          ],
+                        ],
+                      ),
                     ),
+                    if (progress != null)
+                      Positioned(left: 8, right: 8, bottom: 8, child: PHProgress(value: progress, height: 5)),
                   ],
                 ),
               ),
             ),
           ),
-          if (style == CardStyle.portrait) ...[
-            const SizedBox(height: 8),
-            Text(game.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5)),
-            Text(game.category, maxLines: 1, style: const TextStyle(color: PH.textDim, fontSize: 12)),
-          ],
+          SizedBox(
+            height: gameCardCaptionHeight,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8, left: 2, right: 2),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    game.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13.5,
+                      color: _focused ? Colors.white : PH.text,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text.rich(
+                    TextSpan(children: [
+                      if (game.status != InstallStatus.notInstalled)
+                        TextSpan(
+                          text: game.status == InstallStatus.updateAvailable ? 'Atualização · ' : 'Instalado · ',
+                          style: TextStyle(
+                            color: game.status == InstallStatus.updateAvailable ? PH.yellow : PH.green,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      TextSpan(text: info),
+                    ]),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: PH.textDim, fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
+      ),
+    );
+  }
+}
+
+/// Selo de status na capa: verde (instalado) ou amarelo (atualização).
+class _StatusDot extends StatelessWidget {
+  const _StatusDot({required this.status});
+  final InstallStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    final update = status == InstallStatus.updateAvailable;
+    // Só o ícone: o texto do status vai na legenda (cabe em capas estreitas).
+    return _Glass(
+      child: Icon(
+        update ? Icons.system_update_alt_rounded : Icons.check_circle_rounded,
+        size: 14,
+        color: update ? PH.yellow : PH.green,
       ),
     );
   }
@@ -128,8 +186,36 @@ class _Glass extends StatelessWidget {
   final Widget child;
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-        decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.55), borderRadius: BorderRadius.circular(20)),
-        child: child,
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+    decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.55), borderRadius: BorderRadius.circular(20)),
+    child: child,
+  );
+}
+
+/// Grade de capas (sliver) com a altura certa para capa 2:3 + legenda. Uma
+/// proporção fixa não serve: com cartões pequenos a legenda não encolhe junto.
+class GameCardGrid extends StatelessWidget {
+  const GameCardGrid({super.key, required this.count, required this.itemBuilder, required this.maxTileWidth});
+
+  final int count;
+  final double maxTileWidth;
+  final Widget Function(BuildContext context, int index, double tileWidth) itemBuilder;
+
+  static const _spacing = 20.0;
+
+  @override
+  Widget build(BuildContext context) => SliverLayoutBuilder(builder: (context, constraints) {
+        final cols = ((constraints.crossAxisExtent + _spacing) / (maxTileWidth + _spacing)).ceil().clamp(1, 12);
+        final tileW = (constraints.crossAxisExtent - _spacing * (cols - 1)) / cols;
+        return SliverGrid(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: cols,
+            mainAxisSpacing: 22,
+            crossAxisSpacing: _spacing,
+            // +4 = borda de foco da capa.
+            mainAxisExtent: tileW * 1.5 + 4 + gameCardCaptionHeight,
+          ),
+          delegate: SliverChildBuilderDelegate((context, i) => itemBuilder(context, i, tileW), childCount: count),
+        );
+      });
 }

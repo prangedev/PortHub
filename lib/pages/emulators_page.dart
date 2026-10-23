@@ -467,15 +467,10 @@ class _GeneratedRomArt extends StatelessWidget {
             colors: [Color(0xFF2E7D32), Color(0xFF0B1F0C)],
           ),
         ),
+        // Monograma: o nome fica na legenda abaixo da capa.
         child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Text(name,
-                textAlign: TextAlign.center,
-                maxLines: 4,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18, height: 1.1)),
-          ),
+          child: Text(GeneratedArt.initials(name),
+              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 34, color: Colors.white.withValues(alpha: 0.9))),
         ),
       );
 }

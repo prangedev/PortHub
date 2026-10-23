@@ -26,6 +26,7 @@ import 'services/install_service.dart';
 import 'services/library_service.dart';
 import 'services/artwork_service.dart';
 import 'services/self_update_service.dart';
+import 'achievements/achievement_service.dart';
 import 'emulators/rom_library_service.dart';
 import 'emulators/xbox/xbox_unity.dart';
 import 'database/rom_dao.dart';
@@ -83,6 +84,7 @@ Future<void> main() async {
   final roms = RomLibraryService(RomDao(db), XboxUnity(cache));
   await roms.load();
   final selfUpdate = SelfUpdateService(settings, notifications)..start();
+  final achievements = AchievementService(settings, notifications)..start();
 
   final downloads = DownloadManager(DownloadDao(db), settings);
   await downloads.init();
@@ -119,7 +121,8 @@ Future<void> main() async {
         ChangeNotifierProvider.value(value: notifications),
         ChangeNotifierProvider.value(value: gamepad),
         ChangeNotifierProvider.value(value: roms),
-      ChangeNotifierProvider.value(value: selfUpdate),
+        ChangeNotifierProvider.value(value: selfUpdate),
+        ChangeNotifierProvider.value(value: achievements),
         Provider.value(value: actions),
         Provider.value(value: installer),
         Provider.value(value: gh),

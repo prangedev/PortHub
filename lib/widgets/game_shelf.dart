@@ -36,8 +36,8 @@ class GameShelf extends StatelessWidget {
     if (games.isEmpty && emptyText == null) return const SizedBox.shrink();
     final s = PH.scale(context);
     final cardW = style == CardStyle.portrait ? 168 * s : 340 * s;
-    // +4 = borda de foco (2 px de cada lado); retrato inclui nome e categoria.
-    final cardH = style == CardStyle.portrait ? cardW * 1.5 + 4 + 52 : cardW * 9 / 16 + 4;
+    // +4 = borda de foco (2 px de cada lado) + legenda com nome e informações.
+    final cardH = (style == CardStyle.portrait ? cardW * 1.5 : cardW * 9 / 16) + 4 + gameCardCaptionHeight;
     final downloads = context.watch<DownloadManager>();
     final pad = PH.compact(context) ? 16.0 : 48.0;
 

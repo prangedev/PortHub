@@ -30,7 +30,7 @@ geradas pelo app; com conexão aparecem as imagens dos repositórios).</sub>
 6. [Integração com o GitHub](#integração-com-o-github)
 7. [Provedores de jogos](#provedores-de-jogos)
 8. [Capas e capturas de tela](#capas-e-capturas-de-tela)
-9. [Emuladores (Xbox 360 / XenDroid)](#emuladores-xbox-360--xendroid)
+9. [Emuladores (Xbox 360 / XenDroid)](#emuladores-xbox-360--xendroid) · [Conquistas](#conquistas-retroachievements)
 10. [Banco de dados](#banco-de-dados)
 11. [Download Manager e instalação](#download-manager-e-instalação)
 12. [Navegação por controle](#navegação-por-controle)
@@ -58,6 +58,7 @@ geradas pelo app; com conexão aparecem as imagens dos repositórios).</sub>
 | **Instalação** | Android: APK, APK dividido (`.apks/.xapk/.apkm`), ZIP. Linux: AppImage, executável, ZIP/TAR. Windows: EXE, MSI, ZIP. Tipo detectado automaticamente. |
 | **Atualizações** | Compara a versão instalada com a última release; notificação + botão Atualizar. |
 | **Emuladores** | Aba própria por console. **Xbox 360 → XenDroid**: instala/atualiza o emulador, importa ISOs (arquivo ou pasta, sem copiar), lê o Title ID do disco, busca nome e capa no **XboxUnity** (como o Aurora, com seletor de capas) e abre o jogo direto no emulador. |
+| **Conquistas** | Login no **RetroAchievements**, pontos, ranking, conquistas recentes, progresso por jogo e avisos de desbloqueio em tempo real. |
 | **Capas automáticas** | Ports sem imagem ganham a boxart e capturas de tela do jogo original (acervo libretro, Steam, Wikipédia). |
 | **Extras** | Importação de jogos já instalados, modo offline, múltiplos provedores, atualização automática da biblioteca, sistema de logs, configurações avançadas, resumo por IA local opcional (Ollama). |
 
@@ -299,6 +300,23 @@ ficar sem capa do que mostrar a de outro jogo. Para ports descobertos pelos tóp
 
 ---
 
+## Conquistas (RetroAchievements)
+
+`lib/achievements/`. Aba **Conquistas**, integrada à [Web API do RetroAchievements](https://api-docs.retroachievements.org/):
+
+- **Login:** usuário + **chave da Web API** (retroachievements.org › Settings › Keys). A API não tem login por senha;
+  a chave só lê dados, é validada na hora (chave errada → HTTP 401) e fica salva apenas no aparelho.
+- **Painel:** avatar, lema, o que está jogando agora (rich presence), pontos hardcore/softcore, RetroPoints e posição
+  no ranking; conquistas dos últimos 30 dias com badge; jogos recentes com barra de progresso; conquista da semana
+  (marcada quando você já tem).
+- **Página do jogo:** todas as conquistas — desbloqueadas primeiro (data e se foi em hardcore), bloqueadas com o badge
+  em cinza e a raridade (% dos jogadores).
+- **Tempo real:** com o app em primeiro plano, consulta as conquistas da última hora a cada 60 s; cada desbloqueio
+  novo vira um aviso com o badge (e notificação do sistema), e pontos/progresso se atualizam. Pausa em segundo plano
+  e confere de novo ao voltar. Pode ser desligado no painel.
+
+---
+
 ## Emuladores (Xbox 360 / XenDroid)
 
 `lib/emulators/`. Aba **Emuladores**, um painel por console:
@@ -466,6 +484,7 @@ flutter test                         # compatibilidade, assets, README, ISO de X
 flutter test test/hardware_probe_test.dart   # análise real do hardware da máquina (Windows/Linux)
 PORTHUB_LIVE=1 flutter test test/live        # GitHub (~4 requisições), libretro, Wikipédia e XboxUnity reais
 PORTHUB_LIVE=1 flutter test test/web_release_test.dart   # releases pela página pública (sem cota da API)
+RA_KEY=<sua chave> flutter test test/achievements_test.dart   # API real do RetroAchievements
 ```
 
 ---

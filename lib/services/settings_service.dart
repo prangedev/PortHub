@@ -93,6 +93,19 @@ class SettingsService extends ChangeNotifier {
   bool get notifyUpdates => _b('notify_updates', true);
   set notifyUpdates(bool v) => _set('notify_updates', v ? '1' : '0');
 
+  // --- RetroAchievements --------------------------------------------------------
+  /// Conta conectada (vazio = desconectado). A chave da Web API fica só neste
+  /// aparelho, no banco local.
+  String get raUser => _values['ra_user'] ?? '';
+  set raUser(String v) => _set('ra_user', v.trim());
+
+  String get raApiKey => _values['ra_api_key'] ?? '';
+  set raApiKey(String v) => _set('ra_api_key', v.trim());
+
+  /// Acompanhar desbloqueios em tempo real (consulta a cada minuto com o app aberto).
+  bool get raLive => _b('ra_live', true);
+  set raLive(bool v) => _set('ra_live', v ? '1' : '0');
+
   // --- Atualização do próprio PortHub -----------------------------------------
   /// Procura versões novas do PortHub nas releases do repositório do app.
   bool get selfUpdateCheck => _b('self_update_check', true);
