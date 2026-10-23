@@ -42,7 +42,18 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 /// Renderiza as telas reais com dados de exemplo e salva PNGs em build/screenshots/.
 /// Também falha se houver overflow de layout. Rode: flutter test test/screenshot_test.dart
 Future<void> _loadFonts() async {
-  final root = '${Platform.environment['FLUTTER_ROOT'] ?? r'C:\Users\Gustavo\tools\flutter'}/bin/cache/artifacts/material_fonts';
+  // Fontes Material do SDK em uso. O executável de teste fica em
+  // `bin/cache/artifacts/engine/<plataforma>/flutter_tester`.
+  final candidates = [
+    if (Platform.environment['FLUTTER_ROOT'] case final sdk?) '$sdk/bin/cache/artifacts/material_fonts',
+    '${File(Platform.resolvedExecutable).parent.parent.parent.path}/material_fonts',
+  ];
+  final root = candidates.where((c) => File('$c/roboto-regular.ttf').existsSync()).firstOrNull;
+  if (root == null) {
+    // Sem as fontes as telas saem com a fonte de teste (blocos), mas a checagem de overflow continua valendo.
+    debugPrint('Fontes Material não encontradas em $candidates; usando a fonte padrão de teste.');
+    return;
+  }
   Future<ByteData> f(String n) async => ByteData.sublistView(await File('$root/$n').readAsBytes());
   final roboto = FontLoader('Roboto');
   for (final n in ['roboto-regular.ttf', 'roboto-medium.ttf', 'roboto-bold.ttf', 'roboto-black.ttf']) {
