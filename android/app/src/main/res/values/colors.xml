@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Mesmo fundo do app (PH.bg), evita o clarão branco ao abrir. -->
+    <color name="porthub_bg">#0A0D12</color>
+</resources>

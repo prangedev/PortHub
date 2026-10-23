@@ -1,0 +1,105 @@
+# Build e publicação automáticos do APK do PortHub.
+#
+# A cada push na main: analisa, testa, gera o APK de release assinado sempre com
+# a mesma chave e publica a release "v1.0.<run>". O PortHub instalado no celular
+# confere essa release (Configurações › Atualizações do PortHub) e se atualiza.
+#
+# Secrets necessários (Settings › Secrets and variables › Actions):
+#   PORTHUB_KEYSTORE_BASE64   o .jks em base64
+#   PORTHUB_KEYSTORE_PASSWORD senha do keystore
+#   PORTHUB_KEY_ALIAS         alias da chave (porthub)
+#   PORTHUB_KEY_PASSWORD      senha da chave
+name: Android release
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'backend/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      VERSION: 1.0.${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # para listar os commits desde a última release
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.7
+          cache: true
+
+      - name: Dependências
+        run: flutter pub get
+
+      - name: Análise estática
+        run: flutter analyze
+
+      - name: Testes
+        run: flutter test
+
+      - name: Chave de assinatura
+        env:
+          KEYSTORE_BASE64: ${{ secrets.PORTHUB_KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::error::Secret PORTHUB_KEYSTORE_BASE64 ausente. Sem a mesma chave, o celular não aceita a atualização."
+            exit 1
+          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/porthub-release.jks"
+
+      - name: Build do APK
+        env:
+          PORTHUB_KEYSTORE_FILE: ${{ runner.temp }}/porthub-release.jks
+          PORTHUB_KEYSTORE_PASSWORD: ${{ secrets.PORTHUB_KEYSTORE_PASSWORD }}
+          PORTHUB_KEY_ALIAS: ${{ secrets.PORTHUB_KEY_ALIAS }}
+          PORTHUB_KEY_PASSWORD: ${{ secrets.PORTHUB_KEY_PASSWORD }}
+        run: |
+          flutter build apk --release \
+            --build-name="$VERSION" \
+            --build-number="${{ github.run_number }}" \
+            --dart-define=PORTHUB_UPDATE_REPO="${{ github.repository }}" \
+            --dart-define=PORTHUB_BUILD="${{ github.run_number }}"
+          mv build/app/outputs/flutter-apk/app-release.apk "PortHub-$VERSION.apk"
+          rm -f "$RUNNER_TEMP/porthub-release.jks"
+
+      - name: Publicar release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PREV=$(git describe --tags --abbrev=0 2>/dev/null || true)
+          {
+            echo "Build automático de \`${GITHUB_SHA::7}\`."
+            echo
+            echo "### Mudanças"
+            if [ -n "$PREV" ]; then
+              git log --no-merges --pretty='- %s' "$PREV"..HEAD
+            else
+              git log --no-merges --pretty='- %s' -20
+            fi
+          } > notes.md
+          gh release create "v$VERSION" "PortHub-$VERSION.apk" \
+            --title "PortHub $VERSION" \
+            --notes-file notes.md \
+            --target "$GITHUB_SHA" \
+            --latest

@@ -1,0 +1,874 @@
+{
+  "schema": 1,
+  "name": "PortHub — catálogo comunitário",
+  "note": "Requisitos aqui são estimativas da comunidade. Se o repositório tiver porthub.yaml, ele tem prioridade.",
+  "games": [
+    {
+      "repo": "00-Evan/shattered-pixel-dungeon",
+      "name": "Shattered Pixel Dungeon",
+      "categories": [
+        "RPG"
+      ],
+      "engine": "libGDX",
+      "tags": [
+        "Offline",
+        "Open Source",
+        "Roguelike"
+      ],
+      "android_package": "com.shatteredpixel.shatteredpixeldungeon",
+      "requirements": {
+        "ram": "1GB",
+        "android": "5+",
+        "gles": "2.0",
+        "gpu": "low",
+        "cpu": "low"
+      }
+    },
+    {
+      "repo": "yairm210/Unciv",
+      "name": "Unciv",
+      "categories": [
+        "Estratégia"
+      ],
+      "engine": "libGDX",
+      "tags": [
+        "Offline",
+        "Multiplayer",
+        "Open Source"
+      ],
+      "android_package": "com.unciv.app",
+      "requirements": {
+        "ram": "2GB",
+        "android": "6+",
+        "gles": "2.0",
+        "cpu": "low",
+        "gpu": "low"
+      }
+    },
+    {
+      "repo": "diasurgical/devilutionX",
+      "name": "DevilutionX (Diablo)",
+      "categories": [
+        "RPG",
+        "Ação"
+      ],
+      "engine": "SDL2",
+      "tags": [
+        "Offline",
+        "Multiplayer",
+        "Open Source",
+        "Requer arquivos do jogo"
+      ],
+      "android_package": "org.diasurgical.devilutionx",
+      "requirements": {
+        "ram": "1GB",
+        "android": "6+",
+        "gles": "2.0",
+        "cpu": "low",
+        "gpu": "low"
+      },
+      "original": {
+        "title": "Diablo",
+        "wikipedia": "Diablo (video game)",
+        "systems": [
+          "Sony - PlayStation"
+        ]
+      }
+    },
+    {
+      "repo": "ihhub/fheroes2",
+      "name": "fheroes2 (Heroes of Might and Magic II)",
+      "categories": [
+        "Estratégia"
+      ],
+      "engine": "SDL2",
+      "tags": [
+        "Offline",
+        "Open Source",
+        "Requer arquivos do jogo"
+      ],
+      "android_package": "org.fheroes2",
+      "requirements": {
+        "ram": "1GB",
+        "android": "5+",
+        "cpu": "low",
+        "gpu": "low"
+      },
+      "original": {
+        "title": "Heroes of Might and Magic II",
+        "wikipedia": "Heroes of Might and Magic II"
+      }
+    },
+    {
+      "repo": "luanti-org/luanti",
+      "name": "Luanti (Minetest)",
+      "categories": [
+        "Ação"
+      ],
+      "engine": "Irrlicht",
+      "tags": [
+        "Offline",
+        "Multiplayer",
+        "Open Source",
+        "Sandbox"
+      ],
+      "android_package": "net.minetest.minetest",
+      "requirements": {
+        "ram": "2GB",
+        "android": "5+",
+        "gles": "2.0",
+        "cpu": "mid",
+        "gpu": "low"
+      }
+    },
+    {
+      "repo": "CleverRaven/Cataclysm-DDA",
+      "name": "Cataclysm: Dark Days Ahead",
+      "categories": [
+        "RPG",
+        "Terror"
+      ],
+      "engine": "SDL2",
+      "tags": [
+        "Offline",
+        "Open Source",
+        "Roguelike",
+        "Sobrevivência"
+      ],
+      "android_package": "com.cleverraven.cataclysmdda",
+      "requirements": {
+        "ram": "2GB",
+        "android": "7+",
+        "cpu": "mid",
+        "gpu": "low"
+      }
+    },
+    {
+      "repo": "FWGS/xash3d-fwgs",
+      "name": "Xash3D FWGS (Half-Life)",
+      "categories": [
+        "FPS"
+      ],
+      "engine": "Xash3D (GoldSrc)",
+      "tags": [
+        "Multiplayer",
+        "Open Source",
+        "Requer arquivos do jogo"
+      ],
+      "android_package": "su.xash.engine",
+      "prereleases": true,
+      "requirements": {
+        "ram": "1GB",
+        "android": "5+",
+        "gles": "2.0",
+        "cpu": "low",
+        "gpu": "low"
+      },
+      "original": {
+        "title": "Half-Life",
+        "wikipedia": "Half-Life (video game)",
+        "systems": [
+          "Sony - PlayStation 2"
+        ]
+      }
+    },
+    {
+      "repo": "supertuxkart/stk-code",
+      "name": "SuperTuxKart",
+      "categories": [
+        "Corrida"
+      ],
+      "engine": "Antarctica (STK)",
+      "tags": [
+        "Offline",
+        "Multiplayer",
+        "Open Source"
+      ],
+      "android_package": "org.supertuxkart.stk",
+      "requirements": {
+        "ram": "3GB",
+        "android": "6+",
+        "gles": "3.0",
+        "cpu": "mid",
+        "gpu": "mid",
+        "storage": "1GB"
+      }
+    },
+    {
+      "repo": "agateau/pixelwheels",
+      "name": "Pixel Wheels",
+      "categories": [
+        "Corrida"
+      ],
+      "engine": "libGDX",
+      "tags": [
+        "Offline",
+        "Multiplayer",
+        "Open Source"
+      ],
+      "requirements": {
+        "ram": "1GB",
+        "android": "5+",
+        "cpu": "low",
+        "gpu": "low"
+      }
+    },
+    {
+      "repo": "SuperTux/supertux",
+      "name": "SuperTux",
+      "categories": [
+        "Plataforma"
+      ],
+      "engine": "SDL2",
+      "tags": [
+        "Offline",
+        "Open Source"
+      ],
+      "requirements": {
+        "ram": "1GB",
+        "android": "7+",
+        "gles": "2.0",
+        "cpu": "low",
+        "gpu": "low"
+      }
+    },
+    {
+      "repo": "Keriew/augustus",
+      "name": "Augustus (Caesar III)",
+      "categories": [
+        "Estratégia"
+      ],
+      "engine": "SDL2",
+      "tags": [
+        "Offline",
+        "Open Source",
+        "Requer arquivos do jogo"
+      ],
+      "requirements": {
+        "ram": "1GB",
+        "android": "5+",
+        "cpu": "low",
+        "gpu": "low"
+      },
+      "original": {
+        "title": "Caesar III",
+        "wikipedia": "Caesar III"
+      }
+    },
+    {
+      "repo": "chrisboyle/sgtpuzzles",
+      "name": "Simon Tatham's Puzzles",
+      "categories": [
+        "Puzzle"
+      ],
+      "engine": "Nativo (C)",
+      "tags": [
+        "Offline",
+        "Open Source"
+      ],
+      "requirements": {
+        "ram": "512MB",
+        "android": "5+",
+        "platforms": [
+          "android"
+        ],
+        "cpu": "low",
+        "gpu": "low"
+      }
+    },
+    {
+      "repo": "OpenRA/OpenRA",
+      "name": "OpenRA",
+      "categories": [
+        "Estratégia"
+      ],
+      "engine": "OpenRA",
+      "tags": [
+        "Offline",
+        "Multiplayer",
+        "Open Source",
+        "RTS"
+      ],
+      "requirements": {
+        "ram": "2GB",
+        "platforms": [
+          "linux",
+          "windows"
+        ],
+        "opengl": "3.2",
+        "cpu": "mid",
+        "gpu": "low"
+      },
+      "original": {
+        "title": "Command & Conquer: Red Alert",
+        "wikipedia": "Command & Conquer: Red Alert",
+        "systems": [
+          "Sony - PlayStation"
+        ]
+      }
+    },
+    {
+      "repo": "endless-sky/endless-sky",
+      "name": "Endless Sky",
+      "categories": [
+        "Estratégia",
+        "Ação"
+      ],
+      "engine": "C++ / OpenGL",
+      "tags": [
+        "Offline",
+        "Open Source",
+        "Espaço"
+      ],
+      "requirements": {
+        "ram": "2GB",
+        "platforms": [
+          "linux",
+          "windows"
+        ],
+        "opengl": "3.0",
+        "cpu": "low",
+        "gpu": "low"
+      }
+    },
+    {
+      "repo": "Novum/vkQuake",
+      "name": "vkQuake",
+      "categories": [
+        "FPS",
+        "Terror"
+      ],
+      "engine": "Quake Engine (Vulkan)",
+      "tags": [
+        "Offline",
+        "Multiplayer",
+        "Open Source",
+        "Requer arquivos do jogo"
+      ],
+      "requirements": {
+        "ram": "2GB",
+        "platforms": [
+          "linux",
+          "windows"
+        ],
+        "vulkan": true,
+        "cpu": "low",
+        "gpu": "mid"
+      },
+      "original": {
+        "title": "Quake",
+        "wikipedia": "Quake (video game)",
+        "systems": [
+          "Nintendo - Nintendo 64"
+        ]
+      }
+    },
+    {
+      "repo": "ZDoom/gzdoom",
+      "name": "GZDoom",
+      "categories": [
+        "FPS",
+        "Terror"
+      ],
+      "engine": "GZDoom",
+      "tags": [
+        "Offline",
+        "Multiplayer",
+        "Open Source",
+        "Requer arquivos do jogo"
+      ],
+      "requirements": {
+        "ram": "2GB",
+        "platforms": [
+          "linux",
+          "windows"
+        ],
+        "opengl": "3.3",
+        "cpu": "low",
+        "gpu": "mid"
+      },
+      "original": {
+        "title": "Doom",
+        "wikipedia": "Doom (1993 video game)"
+      }
+    },
+    {
+      "repo": "rfandango/XenDroid",
+      "name": "XenDroid",
+      "description": "Emulador de Xbox 360 para Android baseado no Xenia Edge, com backend Vulkan. Importe seus ISOs na aba Emuladores.",
+      "categories": [
+        "Emulador"
+      ],
+      "tags": [
+        "Emulador",
+        "Xbox 360",
+        "Open Source"
+      ],
+      "engine": "Xenia",
+      "android_package": "xendroid.compose",
+      "requirements": {
+        "platform": "android",
+        "android": "10+",
+        "architecture": "arm64",
+        "vulkan": true,
+        "ram": "6GB",
+        "cpu": 90,
+        "gpu": 90
+      }
+    },
+    {
+      "repo": "RanggaCasper/Black-Android",
+      "name": "Black",
+      "description": "Port nativo não oficial da versão de Xbox de Black (Criterion, 2006), recompilado para arm64 com Vulkan, controles de toque, mira por giroscópio e suporte a controle.",
+      "categories": [
+        "FPS",
+        "Ação"
+      ],
+      "tags": [
+        "Offline",
+        "Recompilação",
+        "Xbox",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "XboxXBE-Recomp",
+      "original": {
+        "title": "Black",
+        "systems": [
+          "Microsoft - Xbox"
+        ],
+        "wikipedia": "Black (video game)"
+      },
+      "game_data": "Copie o jogo (ISO da versão USA ou Europa, ou o default.xbe com as pastas do disco) para /storage/emulated/0/Black e permita o acesso a todos os arquivos ao abrir o app.",
+      "requirements": {
+        "platform": "android",
+        "android": "10+",
+        "architecture": "arm64",
+        "vulkan": true,
+        "ram": "4GB",
+        "storage": "2GB",
+        "cpu": "mid",
+        "gpu": "mid"
+      }
+    },
+    {
+      "repo": "codepdbh/nfsu2-recompiled",
+      "name": "Need for Speed: Underground 2",
+      "description": "Recompilação estática do SPEED2.EXE (versão PC) para ARM64 e ARMv7, com DXVK sobre Vulkan, controles de toque e suporte a controle.",
+      "categories": [
+        "Corrida"
+      ],
+      "tags": [
+        "Offline",
+        "Recompilação",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "pcrecomp + DXVK",
+      "original": {
+        "title": "Need for Speed: Underground 2",
+        "systems": [
+          "Sony - PlayStation 2",
+          "Microsoft - Xbox"
+        ]
+      },
+      "game_data": "Precisa dos arquivos da sua cópia de PC: copie a pasta do jogo para /sdcard/nfsu2/.",
+      "requirements": {
+        "platform": "android",
+        "android": "10+",
+        "vulkan": true,
+        "ram": "4GB",
+        "cpu": "mid",
+        "gpu": "mid"
+      }
+    },
+    {
+      "repo": "codepdbh/nfsmwpc-recompiled",
+      "name": "Need for Speed: Most Wanted (2005)",
+      "description": "Recompilação estática da versão de PC do Most Wanted (speed.exe) para Android ARM64 e ARMv7, com launcher, controles de toque e suporte a controle.",
+      "categories": [
+        "Corrida"
+      ],
+      "tags": [
+        "Offline",
+        "Recompilação",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "pcrecomp + DXVK",
+      "original": {
+        "title": "Need for Speed: Most Wanted",
+        "systems": [
+          "Sony - PlayStation 2",
+          "Microsoft - Xbox"
+        ],
+        "wikipedia": "Need for Speed: Most Wanted (2005 video game)"
+      },
+      "game_data": "Precisa dos arquivos da sua cópia de PC do Most Wanted (2005), copiados para a pasta nfsmw indicada pelo launcher do app.",
+      "requirements": {
+        "platform": "android",
+        "android": "10+",
+        "vulkan": true,
+        "ram": "4GB",
+        "cpu": "mid",
+        "gpu": "mid"
+      }
+    },
+    {
+      "repo": "madelrandel-blip/NFSMW-Recompiled",
+      "name": "Need for Speed: Most Wanted (Xbox 360)",
+      "description": "Recompilação estática nativa da versão de Xbox 360 do Most Wanted (2005), feita com o ReXGlue SDK. Experimental.",
+      "categories": [
+        "Corrida"
+      ],
+      "tags": [
+        "Offline",
+        "Recompilação",
+        "Experimental",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "ReXGlue",
+      "original": {
+        "title": "Need for Speed: Most Wanted",
+        "systems": [
+          "Sony - PlayStation 2"
+        ],
+        "wikipedia": "Need for Speed: Most Wanted (2005 video game)"
+      },
+      "game_data": "Requer o ISO ou o dump GOD da versão de Xbox 360 PAL Espanha; outras regiões ainda não funcionam.",
+      "requirements": {
+        "platform": "android",
+        "architecture": "arm64",
+        "vulkan": true,
+        "ram": "6GB",
+        "cpu": "high",
+        "gpu": "high"
+      }
+    },
+    {
+      "repo": "codepdbh/NFS-CARBON-360-ANDROID-RECOMP",
+      "name": "Need for Speed: Carbon",
+      "description": "Recompilação estática experimental da versão de Xbox 360 do Carbon (ReXGlue) para Android ARM64 com Vulkan. Testada em Adreno 830.",
+      "categories": [
+        "Corrida"
+      ],
+      "tags": [
+        "Offline",
+        "Recompilação",
+        "Experimental",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "ReXGlue",
+      "original": {
+        "title": "Need for Speed: Carbon",
+        "systems": [
+          "Sony - PlayStation 2",
+          "Microsoft - Xbox"
+        ]
+      },
+      "game_data": "Precisa da sua cópia de Xbox 360 do Carbon (pastas NFS e Movies, cerca de 6 GB); o launcher do app verifica os arquivos e os recursos de Vulkan da GPU.",
+      "requirements": {
+        "platform": "android",
+        "android": "8+",
+        "architecture": "arm64",
+        "vulkan": true,
+        "ram": "8GB",
+        "storage": "6GB",
+        "cpu": "high",
+        "gpu": "high"
+      }
+    },
+    {
+      "repo": "codepdbh/nfsu1-recompiled",
+      "name": "Need for Speed: Underground",
+      "description": "Recompilação estática do Speed.exe (PC, patch 1.4) para Android ARM64 e ARMv7, com o mesmo launcher e controles do port do Underground 2. Em desenvolvimento.",
+      "categories": [
+        "Corrida"
+      ],
+      "tags": [
+        "Offline",
+        "Recompilação",
+        "Experimental",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "pcrecomp + DXVK",
+      "original": {
+        "title": "Need for Speed: Underground",
+        "systems": [
+          "Sony - PlayStation 2",
+          "Microsoft - Xbox"
+        ]
+      },
+      "game_data": "Precisa dos arquivos da sua cópia de PC do Underground (patch 1.4).",
+      "requirements": {
+        "platform": "android",
+        "android": "10+",
+        "vulkan": true,
+        "ram": "3GB",
+        "cpu": "mid",
+        "gpu": "mid"
+      }
+    },
+    {
+      "repo": "ZloiKILLER/nfs3recompiled-android",
+      "name": "Need for Speed III: Hot Pursuit",
+      "description": "Versão de PC do Need for Speed III: Hot Pursuit recompilada para rodar nativamente no Android.",
+      "categories": [
+        "Corrida"
+      ],
+      "tags": [
+        "Offline",
+        "Recompilação",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "Recompilação",
+      "original": {
+        "title": "Need for Speed III: Hot Pursuit",
+        "systems": [
+          "Sony - PlayStation"
+        ]
+      },
+      "game_data": "Precisa dos arquivos da sua cópia de PC do Need for Speed III.",
+      "requirements": {
+        "platform": "android",
+        "android": "8+",
+        "architecture": "arm64",
+        "gles": "3.0",
+        "ram": "2GB",
+        "cpu": "low",
+        "gpu": "low"
+      }
+    },
+    {
+      "repo": "RanggaCasper/ShaolinMonks-Android",
+      "name": "Mortal Kombat: Shaolin Monks",
+      "description": "Port nativo não oficial da versão de Xbox de Mortal Kombat: Shaolin Monks, recompilado para arm64 com Vulkan e suporte a toque, controle e teclado.",
+      "categories": [
+        "Ação"
+      ],
+      "tags": [
+        "Offline",
+        "Recompilação",
+        "Xbox",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "XboxXBE-Recomp",
+      "original": {
+        "title": "Mortal Kombat: Shaolin Monks",
+        "systems": [
+          "Microsoft - Xbox"
+        ]
+      },
+      "game_data": "Copie o jogo (ISO ou default.xbe com as pastas do disco) para /storage/emulated/0/ShaolinMonks e permita o acesso a todos os arquivos ao abrir o app.",
+      "requirements": {
+        "platform": "android",
+        "android": "10+",
+        "architecture": "arm64",
+        "vulkan": true,
+        "ram": "4GB",
+        "storage": "4GB",
+        "cpu": "mid",
+        "gpu": "mid"
+      }
+    },
+    {
+      "repo": "YuutaTsubasa/Free-Riders-Recompiled",
+      "name": "Sonic Free Riders",
+      "description": "Port não oficial da versão de Xbox 360 de Sonic Free Riders por recompilação estática, para Windows, Linux e Android, com controles de toque.",
+      "categories": [
+        "Corrida"
+      ],
+      "tags": [
+        "Offline",
+        "Recompilação",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "ReXGlue",
+      "original": {
+        "title": "Sonic Free Riders",
+        "systems": [
+          "Microsoft - Xbox 360"
+        ],
+        "wikipedia": "Sonic Free Riders"
+      },
+      "game_data": "Precisa da sua cópia de Xbox 360 do Sonic Free Riders.",
+      "requirements": {
+        "android": "10+",
+        "architecture": "arm64",
+        "vulkan": true,
+        "ram": "6GB",
+        "cpu": "high",
+        "gpu": "high"
+      }
+    },
+    {
+      "repo": "WitherBlitz/NSMB-Wii-Multiplayer-Recompilation",
+      "name": "New Super Mario Bros. Wii",
+      "description": "New Super Mario Bros. Wii compilado para ARM64 com antecedência, rodando nativamente no Android e no Windows, com multiplayer em LAN.",
+      "categories": [
+        "Plataforma"
+      ],
+      "tags": [
+        "Offline",
+        "Multiplayer",
+        "Recompilação",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "Recompilação",
+      "original": {
+        "title": "New Super Mario Bros. Wii",
+        "systems": [
+          "Nintendo - Wii"
+        ]
+      },
+      "game_data": "Precisa da sua cópia de New Super Mario Bros. Wii (USA, SMNE01).",
+      "requirements": {
+        "android": "11+",
+        "architecture": "arm64",
+        "vulkan": true,
+        "ram": "3GB",
+        "cpu": "mid",
+        "gpu": "mid"
+      }
+    },
+    {
+      "repo": "josiahg2502-glitch/Mother3Recomp",
+      "name": "MOTHER 3",
+      "description": "MOTHER 3 para Windows, Linux e Android, feito com gbarecomp, com suporte a patches de tradução.",
+      "categories": [
+        "RPG"
+      ],
+      "tags": [
+        "Offline",
+        "Recompilação",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "gbarecomp",
+      "original": {
+        "title": "Mother 3",
+        "systems": [
+          "Nintendo - Game Boy Advance"
+        ]
+      },
+      "game_data": "Precisa da ROM do seu cartucho de MOTHER 3.",
+      "requirements": {
+        "ram": "2GB",
+        "cpu": "low",
+        "gpu": "low"
+      }
+    },
+    {
+      "repo": "nathanialf/ico-pc",
+      "name": "ICO",
+      "description": "ICO (PS2, 2001) rodando como programa nativo no PC, no Steam Deck e no Android, a partir da descompilação do jogo.",
+      "categories": [
+        "Puzzle",
+        "Ação"
+      ],
+      "tags": [
+        "Offline",
+        "Descompilação",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "Descompilação",
+      "original": {
+        "title": "ICO",
+        "systems": [
+          "Sony - PlayStation 2"
+        ],
+        "wikipedia": "Ico"
+      },
+      "game_data": "Precisa da imagem do seu disco europeu de ICO (SCES-50760) em .iso, .chd ou .bin.",
+      "requirements": {
+        "android": "10+",
+        "architecture": "arm64",
+        "ram": "4GB",
+        "cpu": "mid",
+        "gpu": "mid"
+      }
+    },
+    {
+      "repo": "OpenPort-Labs/Galaxy-Android",
+      "name": "Super Mario Galaxy",
+      "description": "Port nativo 100% ARM64 do Super Mario Galaxy a partir de código reconstruído, com Vulkan 1.0, AAudio e controle por giroscópio.",
+      "categories": [
+        "Plataforma"
+      ],
+      "tags": [
+        "Offline",
+        "Descompilação",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "Descompilação",
+      "original": {
+        "title": "Super Mario Galaxy",
+        "systems": [
+          "Nintendo - Wii"
+        ]
+      },
+      "game_data": "Copie a imagem do seu disco (.rvz, .wbfs, .iso ou .wia) para a pasta Download do aparelho.",
+      "requirements": {
+        "platform": "android",
+        "android": "11+",
+        "architecture": "arm64",
+        "vulkan": true,
+        "ram": "3GB",
+        "storage": "2.5GB",
+        "cpu": "mid",
+        "gpu": "mid"
+      }
+    },
+    {
+      "repo": "ChupathingyCE/chupathingyce",
+      "name": "Halo: Combat Evolved (Chupathingy)",
+      "description": "Port nativo da descompilação de Halo: Combat Evolved para Windows, Mac, Linux e Android, com jogo online e servidores dedicados.",
+      "categories": [
+        "FPS",
+        "Ação"
+      ],
+      "tags": [
+        "Multiplayer",
+        "Descompilação",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "Descompilação",
+      "original": {
+        "title": "Halo: Combat Evolved",
+        "systems": [
+          "Microsoft - Xbox"
+        ]
+      },
+      "game_data": "Precisa da imagem do seu disco de Halo: Combat Evolved (.iso ou .xiso, qualquer região); o app pede o arquivo na primeira abertura.",
+      "requirements": {
+        "android": "9+",
+        "architecture": "arm64",
+        "ram": "3GB",
+        "cpu": "mid",
+        "gpu": "mid"
+      }
+    },
+    {
+      "repo": "YuutaTsubasa/ChaotixRecompiled",
+      "name": "Knuckles' Chaotix",
+      "description": "Recompilação estática do Knuckles' Chaotix (Sega 32X) para C++ nativo: Windows, Linux, macOS e Android.",
+      "categories": [
+        "Plataforma"
+      ],
+      "tags": [
+        "Offline",
+        "Recompilação",
+        "Requer arquivos do jogo"
+      ],
+      "engine": "Recompilação",
+      "original": {
+        "title": "Knuckles' Chaotix",
+        "systems": [
+          "Sega - 32X"
+        ]
+      },
+      "game_data": "Precisa da ROM do seu cartucho de Knuckles' Chaotix.",
+      "requirements": {
+        "ram": "1GB",
+        "cpu": "low",
+        "gpu": "low"
+      }
+    }
+  ]
+}

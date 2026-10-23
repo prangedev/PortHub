@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tudo por HTTPS, exceto as boxarts oficiais do marketplace do Xbox 360,
+     que a Microsoft só serve por HTTP (usadas como capa reserva dos ISOs). -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">download.xbox.com</domain>
+    </domain-config>
+</network-security-config>

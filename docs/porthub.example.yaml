@@ -1,0 +1,33 @@
+# porthub.yaml — coloque na raiz do repositório do seu port.
+# Todos os campos são opcionais. Os requisitos aqui têm prioridade sobre o
+# catálogo comunitário e sobre as heurísticas do README.
+
+name: Meu Port
+description: Port do clássico X para Android e Linux, com controles por toque e gamepad.
+
+# RPG, Ação, FPS, Corrida, Plataforma, Estratégia, Terror, Puzzle
+category: [RPG, Ação]
+engine: SDL2
+tags: [Offline, Multiplayer]
+
+# Package name do APK (usado para abrir o jogo e para importar instalações existentes).
+android_package: org.exemplo.meuport
+
+# Artes (URLs absolutas). Capa 2:3, banner 16:9, ícone quadrado.
+cover: https://raw.githubusercontent.com/eu/meuport/main/art/capa.png
+banner: https://raw.githubusercontent.com/eu/meuport/main/art/banner.jpg
+icon: https://raw.githubusercontent.com/eu/meuport/main/art/icone.png
+
+requirements:
+  ram: 4GB                 # mínimo
+  recommended_ram: 6GB
+  architecture: [arm64-v8a, x86_64]
+  platforms: [android, linux, windows]
+  android: 10+             # versão mínima do Android
+  vulkan: true             # true = obrigatório | false = não usa
+  gles: 3.2                # OpenGL ES mínimo (Android)
+  opengl: 3.3              # OpenGL mínimo (Linux/Windows)
+  directx: 11              # DirectX mínimo (Windows)
+  storage: 2GB             # espaço livre necessário
+  cpu: mid                 # low | mid | high | ultra | número 0–100
+  gpu: high

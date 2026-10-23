@@ -1,0 +1,11 @@
+{
+  "name": "porthub-backend",
+  "version": "1.0.0",
+  "description": "Backend opcional do PortHub: proxy de cache da GitHub API e PortHub Compatibility Database",
+  "main": "server.js",
+  "license": "MIT",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node server.js"
+  }
+}

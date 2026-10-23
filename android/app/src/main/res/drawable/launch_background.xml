@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tela de abertura (Android < 12): fundo escuro com o ícone do PortHub. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/porthub_bg" />
+    <item>
+        <bitmap android:gravity="center" android:src="@mipmap/ic_launcher_foreground" />
+    </item>
+</layer-list>

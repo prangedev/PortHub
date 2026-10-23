@@ -1,0 +1,6 @@
+# Repositório sempre com LF (o build roda em Linux no GitHub Actions)
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jks binary
+*.bat text eol=crlf
