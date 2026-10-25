@@ -36,7 +36,8 @@ class PortHubApp extends StatelessWidget {
           }
           return InputRouter.instance.handleKey(event);
         },
-        child: child!,
+        // Fonte do sistema muito grande estoura os layouts de TV/controle: limita a 1,3×.
+        child: MediaQuery.withClampedTextScaling(maxScaleFactor: 1.3, child: child!),
       ),
       home: firstRunDone ? const AppShell() : const FirstRunPage(),
     );

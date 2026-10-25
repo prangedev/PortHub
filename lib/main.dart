@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
@@ -26,6 +27,7 @@ import 'services/install_service.dart';
 import 'services/library_service.dart';
 import 'services/artwork_service.dart';
 import 'services/self_update_service.dart';
+import 'widgets/error_box.dart';
 import 'achievements/achievement_service.dart';
 import 'emulators/rom_library_service.dart';
 import 'emulators/xbox/xbox_unity.dart';
@@ -50,6 +52,8 @@ Future<void> main() async {
     appLog.e('Flutter', d.exceptionAsString(), d.exception, d.stack);
     FlutterError.presentError(d);
   };
+  // Em release, um componente com erro vira um aviso discreto (não a tela cinza).
+  if (kReleaseMode) ErrorWidget.builder = friendlyErrorWidget;
   PlatformDispatcher.instance.onError = (e, s) {
     appLog.e('Dart', 'Erro não tratado', e, s);
     return true;

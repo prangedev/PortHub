@@ -58,6 +58,9 @@ class LibraryService extends ChangeNotifier {
   String refreshStatus = '';
   double refreshProgress = 0;
   String? lastError;
+
+  /// Jogos que a última sincronização deixou para depois (cota do GitHub sem token).
+  int deferredCount = 0;
   Timer? _autoTimer;
   DateTime? _lastHwScan;
 
@@ -194,6 +197,7 @@ class LibraryService extends ChangeNotifier {
       if (skipped == 0) settings.lastLibraryRefresh = DateTime.now();
       _notifyNewUpdates(previousUpdates);
       appLog.i('Library', 'Sincronização concluída: ${_games.length} jogos');
+      deferredCount = skipped;
       if (skipped > 0) {
         appLog.w('Library', '$skipped jogos ficaram para depois (limite da API sem token); '
             'serão completados ao abrir cada um ou na próxima sincronização.');
